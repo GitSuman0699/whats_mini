@@ -1,4 +1,4 @@
-# gemini_bot
+# whats_mini
 
 A new Flutter project.
 
