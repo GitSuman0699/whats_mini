@@ -16,3 +16,5 @@ const String kCallsCollection = "calls";
 const double kDefaultSplashRadius = 18.0;
 const kChatRoomBackgroundDarkPath = "assets/img/chat_room_bg_dark.png";
 const kChatRoomBackgroundLightPath = "assets/img/chat_room_bg_light.jpg";
+const String oneToOneChat = "One to One";
+const String chat = "Chat";

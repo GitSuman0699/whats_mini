@@ -26,6 +26,7 @@ class ChatRoomScaffold extends ConsumerWidget {
         ),
       ),
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: Colors.transparent,
         appBar: appBar,
         body: body,

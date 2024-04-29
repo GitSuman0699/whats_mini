@@ -2,14 +2,18 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gemini_bot/chat/controller/chat_controller.dart';
+import 'package:gemini_bot/chat/controller/chats_controller.dart';
+import 'package:gemini_bot/chat/controller/multi_chat_controller.dart';
 import 'package:gemini_bot/chat/widgets/input/chat_input_card.dart';
 import 'package:gemini_bot/chat/widgets/input/chat_keyboard.dart';
 import 'package:gemini_bot/theme.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatInputArea extends ConsumerStatefulWidget {
+  final bool isOneOnOne;
   const ChatInputArea({
     super.key,
+    required this.isOneOnOne,
   });
 
   @override
@@ -60,6 +64,7 @@ class _ChatInputAreaState extends ConsumerState<ChatInputArea> {
             children: [
               Expanded(
                 child: ChatKeyboard(
+                  isOneOnOne: widget.isOneOnOne,
                   focusNode: _focusNode,
                   controller: _inputController,
                   showReplyBox: false,
@@ -82,13 +87,20 @@ class _ChatInputAreaState extends ConsumerState<ChatInputArea> {
                       _inputController.clear();
                       _photo = null;
                       setState(() {});
-                      await ref.watch(chatProvider.notifier).updateUserMessage(
-                            text: text,
-                            photo: photo,
-                            p: p,
-                            ref: ref,
-                            context: context,
-                          );
+                      widget.isOneOnOne
+                          ? await ref
+                              .read(chatProvider1.notifier)
+                              .updateUserMessage(
+                                text: text,
+                                photo: photo,
+                                p: p,
+                                ref: ref,
+                                context: context,
+                              )
+                          : ref
+                              .read(multiChatProvider.notifier)
+                              .updateUserMessage(
+                                  text: text, ref: ref, context: context);
                     },
                     child: const Icon(Icons.send),
                   ),

@@ -2,20 +2,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gemini_bot/chat/controller/chat_controller.dart';
+import 'package:gemini_bot/chat/controller/chats_controller.dart';
+import 'package:gemini_bot/constants.dart';
 import 'package:gemini_bot/dialog_components.dart';
 import 'package:gemini_bot/theme.dart';
 
 class ChatRoomAppBar extends ConsumerWidget implements PreferredSizeWidget {
+  final bool isOneOnOne;
   const ChatRoomAppBar({
     Key? key,
-  }) : super(key: key);
+    required this.isOneOnOne,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AppBar(
-      title: const _OneToOneChatAppBar(
+      automaticallyImplyLeading: true,
+      leadingWidth: 20.0,
+      title: _OneToOneChatAppBar(
         roomAvatar: "assets/img/gemini_logo.jpg",
-        roomName: "Gemini Bot",
+        roomName: isOneOnOne ? oneToOneChat : chat,
       ),
       actions: [
         InkWell(
@@ -24,7 +30,7 @@ class ChatRoomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 context, '''Are you sure?\nYou want to clear chat''');
 
             if (action == AlertAction.ok) {
-              ref.read(chatProvider.notifier).newChat(ref);
+              ref.read(chatProvider1.notifier).newChat(ref);
             }
           },
           child: Padding(
@@ -34,14 +40,6 @@ class ChatRoomAppBar extends ConsumerWidget implements PreferredSizeWidget {
             ),
           ),
         ),
-        Switch(
-          value: ref.watch(themeNotifierProvider) == Brightness.dark
-              ? true
-              : false,
-          onChanged: (value) {
-            ref.watch(themeNotifierProvider.notifier).toggle();
-          },
-        )
       ],
     );
   }

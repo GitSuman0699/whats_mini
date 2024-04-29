@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gemini_bot/chat/controller/chat_controller.dart';
 import 'package:gemini_bot/chat/controller/chats_controller.dart';
+import 'package:gemini_bot/chat/controller/multi_chat_controller.dart';
 import 'package:gemini_bot/chat/widgets/bubble/chat_bubble.dart';
 import 'package:gemini_bot/chat/widgets/bubble/chat_image_bubble.dart';
 import 'package:gemini_bot/message%20copy.dart';
 import 'package:gemini_bot/theme.dart';
 
-class MessageList extends ConsumerStatefulWidget {
-  const MessageList({
+class MultiChatMessageList extends ConsumerStatefulWidget {
+  const MultiChatMessageList({
     super.key,
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _ChatMessagesState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _MultiChatChatMessagesState();
 }
 
-class _ChatMessagesState extends ConsumerState<MessageList> {
+class _MultiChatChatMessagesState extends ConsumerState<MultiChatMessageList> {
   final ScrollController scroll = ScrollController();
 
   // @override
@@ -43,7 +45,7 @@ class _ChatMessagesState extends ConsumerState<MessageList> {
   @override
   Widget build(BuildContext context) {
     final isDark = ref.watch(themeNotifierProvider) == Brightness.dark;
-    final message = ref.watch(chatProvider1);
+    final message = ref.watch(multiChatProvider);
 
     return message.when(
       error: (error, stackTrace) => ErrorWidget(error),
@@ -69,24 +71,16 @@ class _ChatMessagesState extends ConsumerState<MessageList> {
         return SingleChildScrollView(
           controller: scroll,
           child: ListView.builder(
-            reverse: true,
+            // reverse: true,
             itemCount: data.length,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return switch (data[index].messageType) {
-                MessageType.image => ChatImageBubble(
-                    model: data[index],
-                    isDark: isDark,
-                    isMessageSender:
-                        data[index].sender == Sender.user ? true : false,
-                  ),
-                _ => ChatBubble(
-                    isSenderMessage:
-                        data[index].sender == Sender.user ? true : false,
-                    model: data[index],
-                  ),
-              };
+              return ChatBubble(
+                isSenderMessage:
+                    data[index].sender == Sender.user ? true : false,
+                multiChatModel: data[index],
+              );
             },
           ),
         );

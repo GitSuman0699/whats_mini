@@ -2,23 +2,26 @@ import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gemini_bot/chat/model/chat_model.dart';
+import 'package:gemini_bot/model/chat_model.dart';
 import 'package:gemini_bot/chat/widgets/bubble/chat_bubble_bottom.dart';
 import 'package:gemini_bot/functions.dart';
 import 'package:gemini_bot/message%20copy.dart';
+import 'package:gemini_bot/model/multi_chat_model.dart';
 import 'package:gemini_bot/theme.dart';
 import 'package:swipe_to/swipe_to.dart';
 
 class ChatBubble extends ConsumerWidget {
   final bool isSenderMessage;
-  final ChatModel model;
+  final ChatModel? model;
+  final MultiChatModel? multiChatModel;
 
   final Widget? child;
   const ChatBubble({
     Key? key,
     required this.isSenderMessage,
     this.child,
-    required this.model,
+    this.model,
+    this.multiChatModel,
   }) : super(key: key);
 
   @override
@@ -40,7 +43,8 @@ class ChatBubble extends ConsumerWidget {
       animationDuration: const Duration(milliseconds: 85),
       child: InkWell(
         onLongPress: () {
-          copyText(model.message!.trim(), context);
+          copyText(model?.message?.trim() ?? multiChatModel!.message!.trim(),
+              context);
         },
         child: Bubble(
           margin: margin,
@@ -67,14 +71,14 @@ class ChatBubble extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      model.sender == Sender.bot
+                      (model?.sender ?? multiChatModel!.sender) == Sender.bot
                           ? Markdown(
                               padding: const EdgeInsets.all(0),
-                              data: model.message!,
+                              data: model?.message ?? multiChatModel!.message!,
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                             )
-                          : Text(model.message!),
+                          : Text(model?.message ?? multiChatModel!.message!),
                     ],
                   ),
                 ),
@@ -83,6 +87,7 @@ class ChatBubble extends ConsumerWidget {
                   right: 0,
                   child: ChatBubbleBottom(
                     model: model,
+                    multiChatModel: multiChatModel,
                     isDark: isDarkEnabled,
                   ),
                 )

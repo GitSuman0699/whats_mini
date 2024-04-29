@@ -1,16 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:gemini_bot/chat/model/chat_model.dart';
+import 'package:gemini_bot/model/chat_model.dart';
 import 'package:gemini_bot/functions.dart';
 import 'package:gemini_bot/message%20copy.dart';
+import 'package:gemini_bot/model/multi_chat_model.dart';
 
 class ChatBubbleBottom extends StatelessWidget {
-  final ChatModel model;
+  final ChatModel? model;
+  final MultiChatModel? multiChatModel;
   final bool isDark;
   const ChatBubbleBottom({
     Key? key,
-    required this.model,
+    this.model,
     required this.isDark,
+    this.multiChatModel,
   }) : super(key: key);
 
   @override
@@ -23,16 +26,16 @@ class ChatBubbleBottom extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          convert24to12(dateTime: model.sentTime),
+          convert24to12(dateTime: model?.sentTime ?? multiChatModel!.sentTime),
           style: TextStyle(
             fontSize: fontSize,
             color: fontColor,
           ),
         ),
         const SizedBox(width: 5),
-        if (model.isRead) ...{
+        if (model?.isRead ?? multiChatModel!.isRead) ...{
           const SizedBox(height: 5),
-          model.sender == Sender.bot
+          (model?.sender ?? multiChatModel!.sender) == Sender.bot
               ? const SizedBox.shrink()
               : const Icon(
                   Icons.done_all,

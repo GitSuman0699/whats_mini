@@ -5,6 +5,7 @@ import 'package:gemini_bot/constants.dart';
 import 'package:gemini_bot/theme.dart';
 
 class ChatKeyboard extends ConsumerStatefulWidget {
+  final bool isOneOnOne;
   final bool showReplyBox;
   final VoidCallback attachFile;
   final VoidCallback attachCamera;
@@ -19,6 +20,7 @@ class ChatKeyboard extends ConsumerStatefulWidget {
     required this.attachGallery,
     required this.controller,
     required this.focusNode,
+    required this.isOneOnOne,
   });
 
   @override
@@ -53,7 +55,7 @@ class _ChatKeyboardState extends ConsumerState<ChatKeyboard> {
         child: Column(
           children: [
             TextField(
-              readOnly: ref.watch(isLoadingProvider) ? true : false,
+              // readOnly: ref.watch(isLoadingProvider) ? true : false,
               focusNode: widget.focusNode,
               controller: widget.controller,
               decoration: InputDecoration(
@@ -66,25 +68,27 @@ class _ChatKeyboardState extends ConsumerState<ChatKeyboard> {
                   onTap: () {},
                   icon: Icons.emoji_emotions_outlined,
                 ),
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Transform.rotate(
-                      angle: -1,
-                      child: _KeyboardButton(
-                        onTap: widget.attachGallery,
-                        icon: Icons.attach_file,
-                        fill: fill,
-                      ),
-                    ),
-                    _KeyboardButton(
-                      onTap: widget.attachCamera,
-                      icon: Icons.camera_alt,
-                      fill: fill,
-                    ),
-                  ],
-                ),
+                suffixIcon: widget.isOneOnOne
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Transform.rotate(
+                            angle: -1,
+                            child: _KeyboardButton(
+                              onTap: widget.attachGallery,
+                              icon: Icons.attach_file,
+                              fill: fill,
+                            ),
+                          ),
+                          _KeyboardButton(
+                            onTap: widget.attachCamera,
+                            icon: Icons.camera_alt,
+                            fill: fill,
+                          ),
+                        ],
+                      )
+                    : SizedBox.shrink(),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: widget.showReplyBox

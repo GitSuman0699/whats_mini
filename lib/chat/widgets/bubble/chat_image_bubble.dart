@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gemini_bot/chat/model/chat_model.dart';
+import 'package:gemini_bot/model/chat_model.dart';
 import 'package:gemini_bot/chat/widgets/bubble/image_bubble.dart';
 import 'package:gemini_bot/theme.dart';
 import 'package:swipe_to/swipe_to.dart';

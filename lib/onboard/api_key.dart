@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gemini_bot/chat/pages/chat_room.dart';
 import 'package:gemini_bot/chat/widgets/chat_room_scaffold.dart';
 import 'package:gemini_bot/dialog_components.dart';
 import 'package:gemini_bot/functions.dart';
+import 'package:gemini_bot/home/home_screen.dart';
 import 'package:gemini_bot/theme.dart';
 import 'package:gemini_bot/util/share_pref.dart';
 
@@ -58,7 +58,7 @@ class _ApiKeyScreenState extends ConsumerState<ApiKeyScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return const ChatRoomPage();
+                        return const HomeScreen();
                       },
                     ),
                   );
