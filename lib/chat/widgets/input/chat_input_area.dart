@@ -2,10 +2,10 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gemini_bot/chat/controller/chat_controller.dart';
-import 'package:gemini_bot/chat/controller/chats_controller.dart';
-import 'package:gemini_bot/chat/controller/multi_chat_controller.dart';
+import 'package:gemini_bot/chat/controller/multi_chats_controller.dart';
 import 'package:gemini_bot/chat/widgets/input/chat_input_card.dart';
 import 'package:gemini_bot/chat/widgets/input/chat_keyboard.dart';
+import 'package:gemini_bot/home/home_controller.dart';
 import 'package:gemini_bot/theme.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -89,7 +89,7 @@ class _ChatInputAreaState extends ConsumerState<ChatInputArea> {
                       setState(() {});
                       widget.isOneOnOne
                           ? await ref
-                              .read(chatProvider1.notifier)
+                              .read(chatProvider.notifier)
                               .updateUserMessage(
                                 text: text,
                                 photo: photo,
@@ -98,7 +98,7 @@ class _ChatInputAreaState extends ConsumerState<ChatInputArea> {
                                 context: context,
                               )
                           : ref
-                              .read(multiChatProvider.notifier)
+                              .read(multiChatsProvider.notifier)
                               .updateUserMessage(
                                   text: text, ref: ref, context: context);
                     },

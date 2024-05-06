@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gemini_bot/chat/controller/chat_controller.dart';
-import 'package:gemini_bot/chat/controller/chats_controller.dart';
 import 'package:gemini_bot/chat/widgets/bubble/chat_bubble.dart';
 import 'package:gemini_bot/chat/widgets/bubble/chat_image_bubble.dart';
+import 'package:gemini_bot/home/home_controller.dart';
 import 'package:gemini_bot/message%20copy.dart';
 import 'package:gemini_bot/theme.dart';
 
@@ -20,18 +20,9 @@ class _ChatMessagesState extends ConsumerState<MessageList> {
   final ScrollController scroll = ScrollController();
 
   // @override
-  // void initState() {
-  //   super.initState();
-  //   scroll.addListener(() {
-  //     if (scroll.position.pixels == scroll.position.minScrollExtent) {
-  //       print("yes");
-  //       if (ref.read(chatProvider1.notifier).page <=
-  //           ref.read(chatProvider1.notifier).totalPage) {
-  //         // ref.read(chatProvider1.notifier).page++;
-  //         ref.invalidate(chatProvider1)();
-  //       }
-  //     }
-  //   });
+  // void deactivate() {
+  //   ref.invalidate(lastMessageProvider);
+  //   super.deactivate();
   // }
 
   @override
@@ -43,7 +34,7 @@ class _ChatMessagesState extends ConsumerState<MessageList> {
   @override
   Widget build(BuildContext context) {
     final isDark = ref.watch(themeNotifierProvider) == Brightness.dark;
-    final message = ref.watch(chatProvider1);
+    final message = ref.watch(chatProvider);
 
     return message.when(
       error: (error, stackTrace) => ErrorWidget(error),
@@ -54,7 +45,6 @@ class _ChatMessagesState extends ConsumerState<MessageList> {
             child: Text('Start your conversation'),
           );
         }
-        // if (ref.read(chatProvider.notifier).page == 1) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (scroll.hasClients) {
             scroll.animateTo(
@@ -64,7 +54,6 @@ class _ChatMessagesState extends ConsumerState<MessageList> {
             );
           }
         });
-        // }
 
         return SingleChildScrollView(
           controller: scroll,

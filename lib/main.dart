@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gemini_bot/isar_helper.dart';
 import 'package:gemini_bot/splash/splash_screen.dart';
@@ -9,6 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Prefs.instance.init();
   await IsarHelper.instance.init();
+  Gemini.init(apiKey: Prefs.getString("api_key"));
 
   runApp(const ProviderScope(child: MyApp()));
 }

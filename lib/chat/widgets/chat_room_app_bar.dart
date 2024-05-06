@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gemini_bot/chat/controller/chat_controller.dart';
-import 'package:gemini_bot/chat/controller/chats_controller.dart';
+import 'package:gemini_bot/chat/controller/multi_chats_controller.dart';
 import 'package:gemini_bot/constants.dart';
 import 'package:gemini_bot/dialog_components.dart';
 import 'package:gemini_bot/theme.dart';
@@ -30,7 +30,11 @@ class ChatRoomAppBar extends ConsumerWidget implements PreferredSizeWidget {
                 context, '''Are you sure?\nYou want to clear chat''');
 
             if (action == AlertAction.ok) {
-              ref.read(chatProvider1.notifier).newChat(ref);
+              if (isOneOnOne) {
+                ref.read(chatProvider.notifier).newChat(ref);
+              } else {
+                ref.read(multiChatsProvider.notifier).newChat(ref);
+              }
             }
           },
           child: Padding(

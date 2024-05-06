@@ -17,15 +17,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
 
-  initializeGemini() {
-    Gemini.init(apiKey: Prefs.getString("api_key"));
-  }
+  // initializeGemini() {
+  //   Gemini.init(apiKey: Prefs.getString("api_key"));
+  // }
 
   @override
   void initState() {
     super.initState();
-    initializeGemini();
-    _controller = TabController(length: 4, vsync: this, initialIndex: 1);
+    // initializeGemini();
+    _controller = TabController(length: 2, vsync: this, initialIndex: 1);
   }
 
   @override
@@ -74,7 +74,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         ],
         bottom: TabBar(
           controller: _controller,
-          indicatorColor: Colors.white,
+          splashBorderRadius: BorderRadius.zero,
+          splashFactory: NoSplash.splashFactory,
           tabs: [
             Tab(
               icon: Icon(Icons.camera_alt),
@@ -82,22 +83,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             Tab(
               text: "CHATS",
             ),
-            Tab(
-              text: "STATUS",
-            ),
-            Tab(
-              text: "CALLS",
-            )
           ],
         ),
       ),
       body: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
         controller: _controller,
         children: [
           CameraPage(),
           ChatPage(),
-          Text("STATUS"),
-          Text("Calls"),
         ],
       ),
     );

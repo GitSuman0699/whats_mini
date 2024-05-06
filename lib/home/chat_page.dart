@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gemini_bot/home/custom_card.dart';
+import 'package:gemini_bot/home/home_controller.dart';
 
 class ChatPage extends StatefulWidget {
   ChatPage({
@@ -24,11 +26,23 @@ class _ChatPageState extends State<ChatPage> {
           color: Colors.white,
         ),
       ),
-      body: ListView.builder(
-        itemCount: 2,
-        itemBuilder: (contex, index) => CustomCard(
-          index: index,
-        ),
+      body: Consumer(
+        builder: (context, ref, child) {
+          final home = ref.watch(lastMessageProvider);
+          return home.when(
+            error: (error, stackTrace) => ErrorWidget(error),
+            loading: () => Center(
+              child: CircularProgressIndicator(),
+            ),
+            data: (data) => ListView.builder(
+              itemCount: 2,
+              itemBuilder: (contex, index) => CustomCard(
+                index: index,
+                home: data,
+              ),
+            ),
+          );
+        },
       ),
     );
   }

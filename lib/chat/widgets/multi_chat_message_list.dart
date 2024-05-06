@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gemini_bot/chat/controller/chat_controller.dart';
-import 'package:gemini_bot/chat/controller/chats_controller.dart';
-import 'package:gemini_bot/chat/controller/multi_chat_controller.dart';
+import 'package:gemini_bot/chat/controller/multi_chats_controller.dart';
 import 'package:gemini_bot/chat/widgets/bubble/chat_bubble.dart';
-import 'package:gemini_bot/chat/widgets/bubble/chat_image_bubble.dart';
+import 'package:gemini_bot/home/home_controller.dart';
 import 'package:gemini_bot/message%20copy.dart';
 import 'package:gemini_bot/theme.dart';
 
@@ -36,6 +34,12 @@ class _MultiChatChatMessagesState extends ConsumerState<MultiChatMessageList> {
   //   });
   // }
 
+  // @override
+  // void deactivate() {
+  //   ref.invalidate(lastMessageProvider);
+  //   super.deactivate();
+  // }
+
   @override
   void dispose() {
     scroll.dispose();
@@ -45,7 +49,7 @@ class _MultiChatChatMessagesState extends ConsumerState<MultiChatMessageList> {
   @override
   Widget build(BuildContext context) {
     final isDark = ref.watch(themeNotifierProvider) == Brightness.dark;
-    final message = ref.watch(multiChatProvider);
+    final message = ref.watch(multiChatsProvider);
 
     return message.when(
       error: (error, stackTrace) => ErrorWidget(error),

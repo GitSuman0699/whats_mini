@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gemini_bot/chat/pages/chat_room.dart';
 import 'package:gemini_bot/constants.dart';
+import 'package:gemini_bot/functions.dart';
+import 'package:gemini_bot/home/home_controller.dart';
 
 class CustomCard extends StatelessWidget {
   final int index;
-  const CustomCard({super.key, required this.index});
+  final HomeModel? home;
+  const CustomCard({super.key, required this.index, this.home});
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +20,19 @@ class CustomCard extends StatelessWidget {
               ? Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (contex) => ChatRoomPage(
-                            isOneOnOne: true,
-                          )))
+                    builder: (contex) => ChatRoomPage(
+                      isOneOnOne: true,
+                    ),
+                  ),
+                )
               : Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (contex) => ChatRoomPage(
-                            isOneOnOne: false,
-                          )));
+                    builder: (contex) => ChatRoomPage(
+                      isOneOnOne: false,
+                    ),
+                  ),
+                );
         },
         child: Column(
           children: [
@@ -43,20 +51,38 @@ class CustomCard extends StatelessWidget {
               ),
               subtitle: Row(
                 children: [
-                  Icon(Icons.done_all),
-                  SizedBox(
-                    width: 3,
-                  ),
-                  Text(
-                    "last message",
-                    style: TextStyle(
-                      fontSize: 13,
+                  // Visibility(
+                  //   visible: home != null &&  ,
+                  //   child: Icon(
+                  //     Icons.done_all,
+                  //     size: 16,
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   width: 3,
+                  // ),
+                  Expanded(
+                    child: Text(
+                      index == 0
+                          ? home?.oneToOne?.message ?? "Start now"
+                          : home?.chat?.message ?? "Start now",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 13,
+                      ),
                     ),
                   ),
                 ],
               ),
-              trailing: Text("time"),
-            ),
+              trailing: index == 0
+                  ? home?.oneToOne != null
+                      ? Text(convert24to12(dateTime: home!.oneToOne!.sentTime))
+                      : Text("")
+                  : home?.chat != null
+                      ? Text(convert24to12(dateTime: home!.chat!.sentTime))
+                      : Text(""),
+            )
             // Padding(
             //   padding: const EdgeInsets.only(right: 20, left: 80),
             //   child: Divider(

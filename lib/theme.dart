@@ -44,6 +44,10 @@ final lightTheme = ThemeData.light().copyWith(
     color: kPrimaryColor,
     foregroundColor: Colors.white,
   ),
+  tabBarTheme: TabBarTheme(
+      indicatorColor: Colors.white,
+      labelColor: Colors.white,
+      unselectedLabelColor: Colors.grey),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: kPrimaryColor,
@@ -63,6 +67,7 @@ final darkTheme = ThemeData.dark().copyWith(
     seedColor: kPrimaryColor,
     brightness: Brightness.dark,
   ),
+  tabBarTheme: TabBarTheme(indicatorColor: kPrimaryColor),
   brightness: Brightness.dark,
   appBarTheme: const AppBarTheme(
     elevation: 0.0,
