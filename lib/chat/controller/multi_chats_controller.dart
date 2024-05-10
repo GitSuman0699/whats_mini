@@ -141,6 +141,7 @@ class MultiChats extends StateNotifier<AsyncValue<List<MultiChatModel>>> {
             .deleteAll();
         contentList.clear();
         ref.watch(multiChatsProvider.notifier).getChatMessages();
+        ref.invalidate(lastMessageProvider);
       },
     );
   }
